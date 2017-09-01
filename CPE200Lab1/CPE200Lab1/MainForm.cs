@@ -17,15 +17,19 @@ namespace CPE200Lab1
         private bool isAfterOperater;
         private bool isAfterEqual;
         private string firstOperand;
+        private string secondOperand;
         private string operate;
+
+        private string operateMod;
         private string keepMod;
         private string firstNum;
         private string secondNum;
-
-        private double resultMod;
-
+        private string resultMod;
+        private bool isMod = false;
+        private string operateOfMod;
         string mem="";
-        // private CalculatorEngine engine;
+
+        CalculatorEngine engine = new CalculatorEngine();
 
         private void resetAll()
         {
@@ -36,47 +40,6 @@ namespace CPE200Lab1
             isAfterEqual = false;
         }
         
-        private string calculate(string operate, string firstOperand, string secondOperand, int maxOutputSize = 8)
-        {
-            switch(operate)
-            {
-                case "+":
-                    return (Convert.ToDouble(firstOperand) + Convert.ToDouble(secondOperand)).ToString();
-                case "-":
-                    return (Convert.ToDouble(firstOperand) - Convert.ToDouble(secondOperand)).ToString();
-                case "X":
-                    return (Convert.ToDouble(firstOperand) * Convert.ToDouble(secondOperand)).ToString();
-                case "÷":
-                    // Not allow devide be zero
-                    if(secondOperand != "0")
-                    {
-                        double result;
-                        string[] parts;
-                        int remainLength;
-
-                        result = (Convert.ToDouble(firstOperand) / Convert.ToDouble(secondOperand));
-                        // split between integer part and fractional part
-                        parts = result.ToString().Split('.');
-                        // if integer part length is already break max output, return error
-                        if(parts[0].Length > maxOutputSize)
-                        {
-                            return "E";
-                        }
-                        // calculate remaining space for fractional part.
-                        remainLength = maxOutputSize - parts[0].Length - 1;
-                        // trim the fractional part gracefully. =
-                        return result.ToString("N" + remainLength);
-                    }
-                    break;
-                case "%":
-                    
-                   // keepMod = (Convert.ToDouble(firstOperand) * Convert.ToDouble(secondOperand))/100 ;
-                    return resultMod.ToString();
-                    break;
-
-            }
-            return "E";
-        }
 
         public MainForm()
         {
@@ -130,7 +93,7 @@ namespace CPE200Lab1
                 }
                 string secondOperand = lblDisplay.Text;
                 secondNum = secondOperand;
-                string result = calculate(operate, firstOperand, secondOperand);
+                string result = calculate.engine(operate, firstOperand, secondOperand);
                 if (result is "E" || result.Length > 8)
                 {
                     lblDisplay.Text = "Error";
@@ -141,32 +104,48 @@ namespace CPE200Lab1
                 }
                 isAfterEqual = true;
             }
-          
             operate = ((Button)sender).Text;
+            if (operate != "%")
+            {
+                operateOfMod = operate;
+            }
             switch (operate)
             {
-                case "+":
-                case "-":
-                case "X":
+                case "+": 
+                case "-": 
+                case "X": 
                 case "÷":
-                    firstOperand = lblDisplay.Text;
-                    isAfterOperater = true;
-                    break;
-                case "%":
-                    firstOperand = lblDisplay.Text;
-                    firstNum = firstOperand;
-                    
-                    break;
-            }
+                        firstOperand = lblDisplay.Text;
+                        firstNum = firstOperand;
+                        isAfterOperater = true;
+                        break;
+                    case "%":
+                        operateMod = "%";
+                        isMod = true;
+                        resultMod = calculate.engine(operateMod,firstOperand,secondNum);
+                        lblDisplay.Text =  resultMod;
+                        break;
+                }
+            
             isAllowBack = false;
         }
         private void btnEqual_Click(object sender, EventArgs e){
+            string result;
+            //string gg="+";
             if (lblDisplay.Text is "Error")
             {
                 return;
             }
-            string secondOperand = lblDisplay.Text;
-            string result = calculate(operate,firstOperand,secondOperand);
+            if (isMod)
+            {
+                result = calculate(operateOfMod, firstNum, resultMod);
+            }
+            else 
+            {
+                string secondOperand = lblDisplay.Text;
+                result = calculate(operate,firstOperand,secondOperand);
+            }
+            
             if (result is "E" || result.Length > 8)
             {
                 lblDisplay.Text = "Error";
