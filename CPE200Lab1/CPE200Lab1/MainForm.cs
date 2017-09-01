@@ -19,6 +19,7 @@ namespace CPE200Lab1
         private string firstOperand;
         private string operate;
         private double memory;
+
         private CalculatorEngine engine;
 
         private void resetAll()
@@ -30,8 +31,6 @@ namespace CPE200Lab1
             isAfterEqual = false;
             firstOperand = null;
         }
-
-      
 
         public MainForm()
         {
@@ -106,7 +105,7 @@ namespace CPE200Lab1
                     return;
                 }
                 string secondOperand = lblDisplay.Text;
-                string result = calculate (operate, firstOperand, secondOperand);
+                string result = engine.calculate (operate, firstOperand, secondOperand);
                 if (result is "E" || result.Length > 8)
                 {
                     lblDisplay.Text = "Error";
