@@ -16,14 +16,14 @@ namespace CPE200Lab1
         private bool isAllowBack;
         private bool isAfterOperater;
         private bool isAfterEqual;
-        private string firstOperand = null;
+        private string firstOperand ;
         private string secondOperand;
         private string operate;
 
         private string operateMod;
         private string keepMod;
         private string firstNum;
-        private string secondNum;
+        private string secondNum ;
         private string resultMod;
         private bool isMod = false;
         private string operateOfMod;
@@ -38,10 +38,10 @@ namespace CPE200Lab1
             containDot = false;
             isAfterOperater = false;
             isAfterEqual = false;
-            firstOperand = firstNum =  null;
+            firstNum = null;
+            firstOperand = null;
         }
         
-
         public MainForm()
         {
             InitializeComponent();
@@ -53,10 +53,6 @@ namespace CPE200Lab1
             if (lblDisplay.Text is "Error")
             {
                 return;
-            }
-            if (isAfterEqual)
-            {
-                resetAll();
             }
             if (isAfterOperater)
             {
@@ -86,27 +82,34 @@ namespace CPE200Lab1
             {
                 return;
             }
-            
-            if (firstOperand != null)
-            {
-                string secondOperand = lblDisplay.Text;
-                secondNum = secondOperand;
-                string result = engine.calculate(operate,firstOperand, secondOperand);
-                if (result is "E" || result.Length > 8)
-                {
-                    lblDisplay.Text = "Error";
-                }
-                else
-                {
-                    lblDisplay.Text = result;
-                    firstOperand = result;
-                }
-            }
 
+            operateOfMod = operate;
             operate = ((Button)sender).Text;
-            if (operate != "%")
+
+            if (firstOperand != null )
             {
-                operateOfMod = operate;
+                secondOperand = lblDisplay.Text;
+                if(operate == "%")
+                {
+                    isMod = true;
+                    resultMod = engine.calculate(operate, firstOperand, lblDisplay.Text);
+                    firstNum = firstOperand;
+                    lblDisplay.Text = resultMod;
+                    operate = operateOfMod;
+                }
+                else {
+                    string result = engine.calculate(operate, firstOperand, secondOperand);
+                    if (result is "E" || result.Length > 8)
+                    {
+                        lblDisplay.Text = "Error";
+                    }
+                    else
+                    {
+                        lblDisplay.Text = result;
+                        firstOperand = result;
+                    }
+                }
+                
             }
             switch (operate)
             {
@@ -115,39 +118,53 @@ namespace CPE200Lab1
                 case "X": 
                 case "÷":
                     firstOperand = lblDisplay.Text;
-                    firstNum = firstOperand;
+                    
                     break;
                case "%":
                     operateMod = "%";
                     isMod = true;
-                    resultMod = engine.calculate(operateMod,firstOperand,secondNum);
+                    resultMod = engine.calculate(operate, firstOperand,lblDisplay.Text);
                     lblDisplay.Text =  resultMod;
+                    operate = operateOfMod;
+            
                     break;
             }
             isAfterOperater = true;
+            containDot = false;
             isAllowBack = false;
         }
         private void btnEqual_Click(object sender, EventArgs e){
+
             string result;
+            if (isAfterEqual)
+            {
+                lblDisplay.Text = engine.calculate(operate, lblDisplay.Text, firstOperand);
+                return;
+            }
             if (lblDisplay.Text is "Error")
             {
                 return;
             }
             if (isMod){
-                result = engine.calculate(operateOfMod, firstNum, resultMod);
+                string secondOperand = lblDisplay.Text;
+                result = engine.calculate( operate , firstNum, secondOperand);
+                isMod = false;
             }
             else{
                 string secondOperand = lblDisplay.Text;
                 result = engine.calculate(operate,firstOperand,secondOperand);
+                firstOperand = secondOperand;
             }
-
+            
             if (result is "E" || result.Length > 8){
                 lblDisplay.Text = "Error";
             }
             else{
                 lblDisplay.Text = result;
             }
+            
             isAfterEqual = true;
+            
         }
 
         private void btnDot_Click(object sender, EventArgs e){
