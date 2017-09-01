@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace CPE200Lab1
 {
-    class CalculatorEngine 
+    class CalculatorEngine
     {
-        private string calculate(string operate, string firstOperand, string secondOperand, int maxOutputSize = 8)
+        public string calculate(string operate, string firstOperand, string secondOperand, int maxOutputSize = 8)
         {
-            switch(operate)
+            switch (operate)
             {
                 case "+":
                     return (Convert.ToDouble(firstOperand) + Convert.ToDouble(secondOperand)).ToString();
@@ -20,7 +20,7 @@ namespace CPE200Lab1
                     return (Convert.ToDouble(firstOperand) * Convert.ToDouble(secondOperand)).ToString();
                 case "÷":
                     // Not allow devide be zero
-                    if(secondOperand != "0")
+                    if (secondOperand != "0")
                     {
                         double result;
                         string[] parts;
@@ -30,7 +30,7 @@ namespace CPE200Lab1
                         // split between integer part and fractional part
                         parts = result.ToString().Split('.');
                         // if integer part length is already break max output, return error
-                        if(parts[0].Length > maxOutputSize)
+                        if (parts[0].Length > maxOutputSize)
                         {
                             return "E";
                         }
@@ -41,8 +41,8 @@ namespace CPE200Lab1
                     }
                     break;
                 case "%":
-                        
-                        return ((Convert.ToDouble(firstOperand) * Convert.ToDouble(secondOperand))/100).ToString();
+
+                    return ((Convert.ToDouble(firstOperand) * Convert.ToDouble(secondOperand)) / 100).ToString();
                     break;
 
             }

@@ -93,7 +93,7 @@ namespace CPE200Lab1
                 }
                 string secondOperand = lblDisplay.Text;
                 secondNum = secondOperand;
-                string result = calculate.engine(operate, firstOperand, secondOperand);
+                string result = engine.calculate(operate, firstOperand, secondOperand);
                 if (result is "E" || result.Length > 8)
                 {
                     lblDisplay.Text = "Error";
@@ -119,10 +119,10 @@ namespace CPE200Lab1
                         firstNum = firstOperand;
                         isAfterOperater = true;
                         break;
-                    case "%":
+               case "%":
                         operateMod = "%";
                         isMod = true;
-                        resultMod = calculate.engine(operateMod,firstOperand,secondNum);
+                        resultMod = engine.calculate(operateMod,firstOperand,secondNum);
                         lblDisplay.Text =  resultMod;
                         break;
                 }
@@ -138,12 +138,12 @@ namespace CPE200Lab1
             }
             if (isMod)
             {
-                result = calculate(operateOfMod, firstNum, resultMod);
+                result = engine.calculate(operateOfMod, firstNum, resultMod);
             }
             else 
             {
                 string secondOperand = lblDisplay.Text;
-                result = calculate(operate,firstOperand,secondOperand);
+                result = engine.calculate(operate,firstOperand,secondOperand);
             }
             
             if (result is "E" || result.Length > 8)
