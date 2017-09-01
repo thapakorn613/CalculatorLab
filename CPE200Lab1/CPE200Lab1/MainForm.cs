@@ -38,6 +38,7 @@ namespace CPE200Lab1
             containDot = false;
             isAfterOperater = false;
             isAfterEqual = false;
+            firstOperand = firstNum =  null;
         }
         
 
