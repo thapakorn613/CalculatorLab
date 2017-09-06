@@ -31,7 +31,7 @@ namespace CPE200Lab1
             containDot = false;
             isAfterOperater = false;
             isAfterEqual = false;
-            firstOperand = null;
+            //firstOperand = null;
         }
 
         public MainForm()
@@ -120,8 +120,10 @@ namespace CPE200Lab1
                     {
                         lblDisplay.Text = result;
                     }
+                    firstOperand = result;
+                    isAfterOperater = true;
                     isAfterEqual = true;
-                    }
+                }
             }
             if (isAfterOperater)
             {
