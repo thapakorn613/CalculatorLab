@@ -91,7 +91,8 @@ namespace CPE200Lab1
             if (result is "E")
             {
                 lblDisplay.Text = "Error";
-            } else
+            } 
+            else
             {
                 lblDisplay.Text = result;
             }

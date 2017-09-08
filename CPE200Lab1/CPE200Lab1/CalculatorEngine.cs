@@ -1,5 +1,5 @@
-﻿
-using System;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,28 +21,42 @@ namespace CPE200Lab1
                 case "+":
                 case "-":
                 case "X":
-                case "÷":
+                case "?":
                     return true;
             }
             return false;
         }
         public string Process(string str)
         {
-            string[] parts = str.Split(' ');
-            if(!(isNumber(parts[0]) && isOperator(parts[1]) && isNumber(parts[2])))
             {
-                return "E";
-            } else
+            string result="Zero.";
+            Stack NumList=new Stack();
+            string[] parts= str.Split(' ');
+            if (parts[(parts.Length) - 1] == "") return "E";
+            for (int i = parts.Length-1; i >=0; i--)
             {
-                return calculate(parts[1], parts[0], parts[2], 4);
+                if (isNumber(parts[i]))
+                {
+                    NumList.Push(parts[i]);
+                }
             }
+            for (int i = 0; i <parts.Length; i++)
+            {
+                if (isOperator(parts[i]))
+                {
+                    result = calculate(parts[i], NumList.Pop().ToString(), NumList.Pop().ToString());
+                    NumList.Push(result);
+                }
+            }
+            return NumList.Pop().ToString();
+        }
 
         }
         public string unaryCalculate(string operate, string operand, int maxOutputSize = 8)
         {
             switch (operate)
             {
-                case "√":
+                case "?":
                     {
                         double result;
                         string[] parts;
@@ -96,7 +110,7 @@ namespace CPE200Lab1
                     return (Convert.ToDouble(firstOperand) - Convert.ToDouble(secondOperand)).ToString();
                 case "X":
                     return (Convert.ToDouble(firstOperand) * Convert.ToDouble(secondOperand)).ToString();
-                case "÷":
+                case "?":
                     // Not allow devide be zero
                     if (secondOperand != "0")
                     {
@@ -119,7 +133,6 @@ namespace CPE200Lab1
                     }
                     break;
                 case "%":
-                    return ((Convert.ToDouble(firstOperand) * Convert.ToDouble(secondOperand))/100).ToString();
                     //your code here
                     break;
             }
