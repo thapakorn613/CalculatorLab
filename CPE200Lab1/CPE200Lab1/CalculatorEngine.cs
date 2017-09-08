@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,42 +20,41 @@ namespace CPE200Lab1
                 case "+":
                 case "-":
                 case "X":
-                case "?":
+                case "÷":
                     return true;
             }
             return false;
         }
+
         public string Process(string str)
         {
+            //Split input string to multiple parts by space
+            List<string> parts = str.Split(' ').ToList<string>();
+            string result;
+            //As long as we have more than one part
+            while(parts.Count > 1)
             {
-            string result="Zero.";
-            Stack NumList=new Stack();
-            string[] parts= str.Split(' ');
-            if (parts[(parts.Length) - 1] == "") return "E";
-            for (int i = parts.Length-1; i >=0; i--)
-            {
-                if (isNumber(parts[i]))
+                //Check if the first three is ready for calcuation
+                if(!(isNumber(parts[0]) && isOperator(parts[1]) && isNumber(parts[2])))
                 {
-                    NumList.Push(parts[i]);
+                    return "E";
+                } else
+                {
+                    //Calculate the first three
+                    result = calculate(parts[1], parts[0], parts[2], 4);
+                    //Remove the first three
+                    parts.RemoveRange(0, 3);
+                    // Put back the result
+                    parts.Insert(0, result);
                 }
             }
-            for (int i = 0; i <parts.Length; i++)
-            {
-                if (isOperator(parts[i]))
-                {
-                    result = calculate(parts[i], NumList.Pop().ToString(), NumList.Pop().ToString());
-                    NumList.Push(result);
-                }
-            }
-            return NumList.Pop().ToString();
-        }
-
+            return parts[0];
         }
         public string unaryCalculate(string operate, string operand, int maxOutputSize = 8)
         {
             switch (operate)
             {
-                case "?":
+                case "√":
                     {
                         double result;
                         string[] parts;
@@ -110,7 +108,7 @@ namespace CPE200Lab1
                     return (Convert.ToDouble(firstOperand) - Convert.ToDouble(secondOperand)).ToString();
                 case "X":
                     return (Convert.ToDouble(firstOperand) * Convert.ToDouble(secondOperand)).ToString();
-                case "?":
+                case "÷":
                     // Not allow devide be zero
                     if (secondOperand != "0")
                     {
