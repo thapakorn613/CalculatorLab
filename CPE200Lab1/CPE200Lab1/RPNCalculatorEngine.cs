@@ -8,27 +8,26 @@ namespace CPE200Lab1
 {
     public class RPNCalculatorEngine : CalculatorEngine
     {
+        
         public new string Process(string str)
         {
             if (str == "" || str == null)
             {
                 return "E";
             }
-            
-            if (str == "1 1 ++ +")
-            {
-                return "E";
-            }
             //str = "1 1 ++ +";
-
             Stack<string> rpnStack = new Stack<string>();
             List<string> parts = str.Split(' ').ToList<string>();
             string result;
             string firstOperand, secondOperand;
+            bool check_OverChar = false;
 
             foreach (string token in parts)
             {
-                
+                if (check_OverChar)
+                {
+                    return "E";
+                }
                 if (isNumber(token))
                 {
                     if (token.First() is '+')
@@ -54,6 +53,10 @@ namespace CPE200Lab1
                         return result;
                     }
                     rpnStack.Push(result);
+                }
+                else
+                {
+                    check_OverChar = true ;
                 }
                 
                 
